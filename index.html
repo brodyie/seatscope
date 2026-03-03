@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SeatScope | Ticket Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- preloader -->
+  <div id="preloader">
+    <div class="sk-card"></div>
+    <div class="sk-card"></div>
+    <div class="sk-card"></div>
+  </div>
+
+  <!-- nav -->
+  <nav>
+    <div id="logo">🎟 SeatScope</div>
+    <div id="nav-right">
+      <button id="theme-btn" onclick="toggleTheme()">🌙</button>
+      <button id="cart-btn" onclick="toggleCart()">🛒 Cart <span id="cart-count">0</span></button>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <div id="hero">
+    <div id="hero-bg"></div>
+    <div id="hero-content">
+      <div id="hero-tag">● Live now — 1,240 events available</div>
+      <h1>Find The Hottest Tours<br>Before They <span id="hero-em">Sell Out</span></h1>
+      <p id="hero-sub">Real-time demand tracking. Smart seat picking. Instant checkout.</p>
+      <div id="hero-btns">
+        <button class="btn-main" onclick="scrollToConcerts()">Explore Events</button>
+        <button class="btn-outline" onclick="scrollToConcerts()">How it works</button>
+      </div>
+      <div id="hero-stats">
+        <div class="stat-box">
+          <div class="stat-num">4.2M+</div>
+          <div class="stat-label">Tickets sold</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1,240</div>
+          <div class="stat-label">Live events</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- saved events -->
+  <div id="saved-section">
+    <div class="section-title">❤️ Saved Events</div>
+    <div id="saved-grid"></div>
+  </div>
+
+  <!-- events heading -->
+  <div id="events-section">
+    <div class="section-title">Upcoming <span style="color: #00e5ff;">Events</span></div>
+  </div>
+
+  <!-- search and filters -->
+  <div id="controls">
+    <div id="search-wrap">
+      <input type="text" id="search-input" placeholder="Search artist or venue..." onkeyup="searchConcerts()">
+    </div>
+    <div id="filter-btns">
+      <button class="filter-btn active" onclick="filterGenre(this, 'all')">All</button>
+      <button class="filter-btn" onclick="filterGenre(this, 'hip-hop')">Hip-Hop</button>
+      <button class="filter-btn" onclick="filterGenre(this, 'pop')">Pop</button>
+      <button class="filter-btn" onclick="filterGenre(this, 'r&b')">R&B</button>
+      <button class="filter-btn" onclick="filterGenre(this, 'edm')">EDM</button>
+      <button class="filter-btn" onclick="sortByPrice()">↑ Price</button>
+      <button class="filter-btn" onclick="sortByDemand()">🔥 Demand</button>
+    </div>
+  </div>
+
+  <!-- cards -->
+  <div id="concerts"></div>
+
+  <!-- cart panel -->
+  <div id="cart-panel">
+    <div id="cart-top">
+      <h2>Your Cart</h2>
+      <button id="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div id="cart-items"></div>
+    <div id="cart-bottom">
+      <div id="cart-total-row">
+        <span style="color: #5a6a82;">Total</span>
+        <span id="cart-total-val">$0</span>
+      </div>
+      <button id="checkout-btn" onclick="openCheckout()">Complete Purchase →</button>
+    </div>
+  </div>
+
+  <!-- seat modal -->
+  <div id="seat-modal">
+    <div id="seat-box">
+      <button class="modal-close" onclick="closeSeatModal()">✕</button>
+      <h2 id="seat-title">Pick Your Seats</h2>
+      <p id="seat-venue" style="color: #5a6a82; margin-bottom: 20px; font-size: 14px;"></p>
+      <div id="stage-label">STAGE</div>
+      <div class="seat-section">
+        <div class="seat-section-title">VIP Front Row — $<span id="vip-price"></span></div>
+        <div id="vip-rows"></div>
+      </div>
+      <div class="seat-section">
+        <div class="seat-section-title">Standard — $<span id="std-price"></span></div>
+        <div id="std-rows"></div>
+      </div>
+      <div class="seat-section">
+        <div class="seat-section-title">Budget — $<span id="bud-price"></span></div>
+        <div id="bud-rows"></div>
+      </div>
+      <div id="seat-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f5c542;"></div>VIP</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div>Standard</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#22c55e;"></div>Budget</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1e293b;border:1px solid #334155;"></div>Taken</div>
+      </div>
+      <div id="seat-summary">
+        <div>
+          <div style="font-size:13px;color:#5a6a82;">Selected</div>
+          <div id="seat-summary-text" style="font-size:17px;font-weight:700;">No seat selected</div>
+        </div>
+        <button id="confirm-seat-btn" onclick="confirmSeat()">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- checkout modal -->
+  <div id="checkout-modal">
+    <div id="checkout-box">
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+      <div id="checkout-form">
+        <h2 style="margin-bottom:24px;">Complete Purchase</h2>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="f-name" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" id="f-card" placeholder="1234 5678 9012 3456" maxlength="19" onkeyup="formatCard(this)">
+        </div>
+        <div id="form-row">
+          <div class="form-group">
+            <label>Expiry</label>
+            <input type="text" id="f-exp" placeholder="MM/YY" maxlength="5" onkeyup="formatExp(this)">
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" id="f-cvv" placeholder="123" maxlength="3">
+          </div>
+        </div>
+        <button id="pay-btn" onclick="processPayment()">Pay $<span id="pay-total">0</span> →</button>
+      </div>
+      <div id="success-screen">
+        <div style="font-size:60px;margin-bottom:16px;">🎉</div>
+        <h3>You're going!</h3>
+        <p style="color:#5a6a82;margin-top:8px;">Tickets sent to your email. See you at the show!</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
